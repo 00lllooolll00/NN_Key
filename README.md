@@ -50,11 +50,6 @@ bool Button1_Read(void)
 4. 创建按键实例并添加到按键管理列表
 
 ```c
-// 方式一：使用便捷宏创建
-nn_key_t *key1;
-NN_Key_Create(key1, "KEY1", Button1_Read);
-
-// 方式二：传统方式创建
 nn_key_t key2;
 NN_Key_Add(&key2, "KEY2", Button2_Read);
 ```
@@ -388,19 +383,6 @@ NN_Key_OnLongPress(key, cb, user_data)
 NN_Key_OnContinuousPress(key, cb, user_data)
 ```
 
-#### 实例创建宏
-
-```c
-// 创建并初始化按键的简化宏
-NN_Key_Create(key_ptr, key_name, read_func)
-
-// 创建并初始化两键组合的简化宏
-NN_Combo_Create2(combo_ptr, combo_name, key1, key2)
-
-// 创建并初始化三键组合的简化宏
-NN_Combo_Create3(combo_ptr, combo_name, key1, key2, key3)
-```
-
 ## 实例示范
 
 ### 基本按键处理
@@ -524,12 +506,12 @@ int main(void)
     
     // 创建两键组合
     nn_comb_t *combo12;
-    NN_Combo_Create2(combo12, "Combo12", key1, key2);
+    NN_Combo_Add(combo12, "Combo12", 2, key1, key2);
     NN_Combo_SetCb(combo12, OnCombo12Triggered, NULL);
     
     // 创建三键组合
     nn_comb_t *combo123;
-    NN_Combo_Create3(combo123, "Combo123", key1, key2, key3);
+    NN_Combo_Add(combo123, "Combo123", 3, key1, key2, key3);
     NN_Combo_SetCb(combo123, OnCombo123Triggered, NULL);
     
     // 设置组合键窗口时间
@@ -547,12 +529,14 @@ int main(void)
 
 ## 注意事项
 
+1. **调用频率**：NN_Key_Handler函数建议以不低于10ms的频率调用，以确保按键状态能够被及时检测。
+
 2. **回调函数执行时间**：回调函数中应避免长时间执行或阻塞操作，以防影响按键库的正常工作。
 
-2. **按键读取函数**：确保按键读取函数返回正确的物理状态（按下为true，释放为false）。如果硬件接口的逻辑与此相反，需要在读取函数中进行逻辑翻转。
+3. **按键读取函数**：确保按键读取函数返回正确的物理状态（按下为true，释放为false）。如果硬件接口的逻辑与此相反，需要在读取函数中进行逻辑翻转。
 
-3. **组合键限制**：组合键成员最多支持4个按键，且这些按键必须在窗口时间内被按下才能触发组合键事件。
+4. **组合键限制**：组合键成员最多支持4个按键，且这些按键必须在窗口时间内被按下才能触发组合键事件。
 
-4. **资源使用**：库内部维护了按键和组合键的全局列表，默认支持最多20个按键和20个组合键，可通过修改头文件中的宏定义进行调整。
+5. **资源使用**：库内部维护了按键和组合键的全局列表，默认支持最多20个按键和20个组合键，可通过修改头文件中的宏定义进行调整。
 
-5. **线程安全性**：本库设计用于单线程环境，如在多线程环境下使用，需考虑线程同步问题。
+6. **线程安全性**：本库设计用于单线程环境，如在多线程环境下使用，需考虑线程同步问题。
