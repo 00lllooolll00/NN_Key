@@ -125,51 +125,6 @@ typedef struct nn_comb_t nn_comb_t;
  */
 #define NN_Key_OnContinuousPress(key, cb, user_data) NN_Key_SetCb(key, KEY_EVENT_LONG_PRESSED_ALWS, cb, user_data)
 
-/**
- * @brief 创建并初始化按键的简化宏
- * @param key_ptr 按键指针
- * @param key_name 按键名称
- * @param read_func 按键读取函数
- */
-#define NN_Key_Create(key_ptr, key_name, read_func)                                                                    \
-    do                                                                                                                 \
-    {                                                                                                                  \
-        static nn_key_t key_instance;                                                                                  \
-        key_ptr = &key_instance;                                                                                       \
-        NN_Key_Add(key_ptr, key_name, read_func);                                                                      \
-    } while (0)
-
-/**
- * @brief 创建并初始化组合键的简化宏(两个按键)
- * @param combo_ptr 组合键指针
- * @param combo_name 组合键名称
- * @param key1 第一个按键指针
- * @param key2 第二个按键指针
- */
-#define NN_Combo_Create2(combo_ptr, combo_name, key1, key2)                                                            \
-    do                                                                                                                 \
-    {                                                                                                                  \
-        static nn_comb_t combo_instance;                                                                               \
-        combo_ptr = &combo_instance;                                                                                   \
-        NN_Combo_Add(combo_ptr, combo_name, 2, key1, key2);                                                            \
-    } while (0)
-
-/**
- * @brief 创建并初始化组合键的简化宏(三个按键)
- * @param combo_ptr 组合键指针
- * @param combo_name 组合键名称
- * @param key1 第一个按键指针
- * @param key2 第二个按键指针
- * @param key3 第三个按键指针
- */
-#define NN_Combo_Create3(combo_ptr, combo_name, key1, key2, key3)                                                      \
-    do                                                                                                                 \
-    {                                                                                                                  \
-        static nn_comb_t combo_instance;                                                                               \
-        combo_ptr = &combo_instance;                                                                                   \
-        NN_Combo_Add(combo_ptr, combo_name, 3, key1, key2, key3);                                                      \
-    } while (0)
-
 /* ========================= 枚举定义 ========================= */
 /**
  * @brief 按键状态枚举
